@@ -20,14 +20,7 @@ public class EnviarMail {
 		
 		Scanner sc = new Scanner(System.in);
 		
-		String[] destinatario = {"adri.villa92@gmail.com"}; //A quienes queremos escribir.
-		String[] adjuntos = {"./recursos/queTalMundo.txt"};
-		String remitente = "secundariaacv";
-		String asunto = "Hola";
-		String cuerpo = "Qué tal?";
-		String clave = "";
-		
-		/*System.out.println("Indica los destinatarios, separados por comas");
+		System.out.println("Indica los destinatarios, separados por comas");
 		String[] destinatario = sc.nextLine().split(",");
 		
 		System.out.println("Indica la ruta de los archivos adjuntos, separados por comas");
@@ -43,7 +36,7 @@ public class EnviarMail {
 	    String cuerpo = sc.nextLine();
 	    
 	    System.out.println("Introduce la contraseña del correo remitente");
-	    String clave = sc.nextLine();*/
+	    String clave = sc.nextLine();
 	    
 	    enviarConGmail(destinatario, adjuntos, remitente, asunto, cuerpo, clave);
 	    
@@ -82,14 +75,16 @@ public class EnviarMail {
 		        	mimeBodyPart.attachFile(new File(adjuntos[i]));
 		        	multipart.addBodyPart(mimeBodyPart);
 		        }
-		        message.setContent(cuerpo,"text/html; charset=utf-8");
-		        message.setContent(multipart);
 	        }
 		    
+	        mimeBodyPart = new MimeBodyPart();
+	        mimeBodyPart.setContent(cuerpo,"text/html; charset=utf-8");
+	        multipart.addBodyPart(mimeBodyPart);
 	        message.setSubject(asunto);
+	        message.setContent(multipart);
 	        
-	        if(adjuntos.length<1)
-	        	message.setText(cuerpo,"UTF-8");
+	        /*if(adjuntos.length<1)
+	        	message.setText(cuerpo,"UTF-8");*/
 	        
 	        Transport transport = session.getTransport("smtp");
 	        transport.connect("smtp.gmail.com", remitente, clave);
